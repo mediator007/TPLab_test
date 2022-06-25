@@ -1,0 +1,28 @@
+version: "3.8"
+
+x-env: &x-env
+  env_file:
+    - .env
+
+services:
+  bot:
+    build:
+      context: app
+    volumes:
+      - static:/static
+    <<: *x-env
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:12.1
+    restart: always
+    <<: *x-env
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      - devdb:/var/lib/postgresql/data
+
+volumes:
+  devdb:
+  static:
