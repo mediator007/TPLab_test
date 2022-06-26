@@ -35,6 +35,5 @@ async def get_screenshot(message: types.Message):
         url=url,
         user_id=user_id,
     )
-
     create_row(row)
     await msg.edit_media(file)

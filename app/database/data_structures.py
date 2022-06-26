@@ -5,4 +5,4 @@ import datetime
 class ScreenshotStatistic:
     url: str
     user_id: int
-    created: datetime = field(default_factory=datetime.now)
+    created: datetime = field(default_factory=datetime.datetime.now)
