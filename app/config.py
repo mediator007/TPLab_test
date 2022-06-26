@@ -7,5 +7,6 @@ import os
 load_dotenv()
 
 TOKEN = os.getenv('token')
+
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot, storage=MemoryStorage())

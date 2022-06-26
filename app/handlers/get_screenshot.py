@@ -7,15 +7,14 @@ from services.site_request import site_check, get_site_title
 from handlers.states import OrderDeals
 from services.screenshot import screenshot
 from config import bot
-
+from database .data_structures import ScreenshotStatistic
+from database.db_requests import create_row
 
 async def get_screenshot(message: types.Message):
     """
     Передаёт пользователю скриншот сайта по url
     """
     user_id = message.from_user.id
-
-    # msg = await message.answer("Получение скриншота ...")
     
     file_path = "/home/viktor/Desktop/TPLab_test/app/services/media/loading.png"
     file = InputFile(file_path)
@@ -26,12 +25,16 @@ async def get_screenshot(message: types.Message):
     
     if status_code > 399: 
         await message.answer("Неверный ввод адреса или сайт недоступен")
-        # await OrderDeals.waiting_for_screenshot.set()
         return
     
     title = get_site_title(url)
     file_name, time = screenshot(url, user_id)
-    # file_name = "/home/viktor/Desktop/TPLab_test/app/services/media/spinner.png"
     file = InputMedia(media=InputFile(file_name), caption=f"{title}, {url}, {time:.2f} сек")
 
+    row = ScreenshotStatistic(
+        url=url,
+        user_id=user_id,
+    )
+
+    create_row(row)
     await msg.edit_media(file)

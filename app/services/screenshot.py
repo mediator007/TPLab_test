@@ -13,7 +13,7 @@ def time_dec(func):
     return wrapper
 
 @time_dec
-def screenshot(url: str, user_id: str):
+def screenshot(url: str, user_id: str) -> str:
     current_date = datetime.now()
     format_date = current_date.strftime("%d_%m_%Y")
     format_url = url.replace('.', '_').replace('http://', '')

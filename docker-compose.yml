@@ -19,7 +19,7 @@ services:
     restart: always
     <<: *x-env
     environment:
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: 123qwe
     volumes:
       - devdb:/var/lib/postgresql/data
 
