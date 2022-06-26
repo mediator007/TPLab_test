@@ -2,7 +2,7 @@ version: "3.8"
 
 x-env: &x-env
   env_file:
-    - .env
+    - ./app/.env
 
 services:
   bot:
@@ -19,7 +19,9 @@ services:
     restart: always
     <<: *x-env
     environment:
-      POSTGRES_PASSWORD: 123qwe
+      POSTGRES_USER: db_user
+      POSTGRES_PASSWORD: db_password
+      POSTGRES_DB: 'bot' 
     volumes:
       - devdb:/var/lib/postgresql/data
 

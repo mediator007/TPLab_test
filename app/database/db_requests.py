@@ -8,10 +8,11 @@ import os
 load_dotenv()
 
 PASSWORD = os.getenv('db_password')
+USER = os.getenv('db_user')
 
 dsl = {
         'dbname': 'bot',
-        'user': 'app',
+        'user': USER,
         'password': PASSWORD,
         'host': '127.0.0.1',
         'port': 5432
@@ -23,17 +24,6 @@ def create_row(row: SS):
         cursor.execute(
             """CREATE TABLE IF NOT EXISTS statistic (url TEXT, user_id INTEGER, created timestamp with time zone);""")
         cursor.execute(
-            f"""INSERT INTO statistic (url, user_id, created) 
-                VALUES (%s, %s, %s);""", (row.url, row.user_id, row.created))
+            f"""INSERT INTO statistic (url, user_id, created) VALUES (%s, %s, %s);""", (row.url, row.user_id, row.created))
         pg_conn.commit()
         cursor.close()
-
-
-# docker run -d \
-#   --name botpostgres \
-#   -p 5432:5432 \
-#   -v $HOME/postgresql/data:/var/lib/postgresql/data \
-#   -e POSTGRES_PASSWORD=123qwe \
-#   -e POSTGRES_USER=app \
-#   -e POSTGRES_DB=bot  \
-#   postgres:13 

@@ -1,7 +1,3 @@
-set -a
-. deploys/dev.env
-set +a
-
 case $1 in
   start)
     ./run.sh stop

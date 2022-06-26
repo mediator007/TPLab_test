@@ -1,4 +1,3 @@
-from urllib import response
 import requests
 from lxml.html import fromstring
 from loguru import logger
