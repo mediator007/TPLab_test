@@ -31,7 +31,7 @@ async def get_screenshot(message: types.Message):
     
     title = get_site_title(url)
     file_name, time = screenshot(url, user_id)
-    file_name = "/home/viktor/Desktop/TPLab_test/app/services/media/spinner.png"
+    # file_name = "/home/viktor/Desktop/TPLab_test/app/services/media/spinner.png"
     file = InputMedia(media=InputFile(file_name), caption=f"{title}, {url}, {time:.2f} сек")
 
     await msg.edit_media(file)
