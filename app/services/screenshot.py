@@ -21,9 +21,9 @@ def screenshot(url: str, user_id: str) -> str:
     format_date = current_date.strftime("%d_%m_%Y")
     format_url = url.replace('.', '_').replace('http://', '')
     file_name = (
-        f'/home/viktor/Desktop/TPLab_test/app/services/media/{format_date}_{user_id}_{format_url}.png'
+        f'./app/services/media/{format_date}_{user_id}_{format_url}.png'
         )
-    driver = webdriver.Chrome('/home/viktor/Desktop/TPLab_test/app/services/chromedriver')
+    driver = webdriver.Chrome('./app/services/chromedriver')
     driver.get(url)
     time.sleep(3)
     driver.get_screenshot_as_file(filename=file_name)

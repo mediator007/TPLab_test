@@ -3,6 +3,7 @@ from loguru import logger
 
 
 from handlers.states import OrderDeals
+from handlers.get_screenshot import admin_buttons
 from services.screenshot import screenshot
 from config import bot
 from database.db_requests import get_statistic
@@ -15,10 +16,10 @@ async def admin(message: types.Message):
     if message.text == admin_buttons.statistic:
         await message.answer("Запросы за сегодня:")
         
-        result = get_statistic()
+        # result = get_statistic()
         
-        for element in result:
-            await message.answer('element[0]')
+        # for element in result:
+        #     await message.answer('element[0]')
         logger.info('Запрос статистики администратором')
         return 
     elif message.text == admin_buttons.logout:

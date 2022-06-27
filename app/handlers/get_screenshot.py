@@ -32,32 +32,32 @@ async def get_screenshot(message: types.Message):
         markup = create_keyboard(admin_buttons)
         await message.answer("Сессия администратора", reply_markup=markup)
         logger.info('Начата сессия администратора')
+        await OrderDeals.waiting_for_admin.set()
+    else:
+        user_id = message.from_user.id
+        
+        file_path = "./app/services/media/loading.png"
+        file = InputFile(file_path)
+        msg = await bot.send_photo(chat_id=user_id, photo=file, caption="Получение скриншота ...")
+
+        url = message.text
+        status_code = site_check(url)
+        
+        if status_code > 399: 
+            await message.answer("Неверный ввод адреса или сайт недоступен")
+            logger.warning(f'Сайт недоступен. Введен url: {url}')
+            return
+        
+        title = get_site_title(url)
+        file_name, time = screenshot(url, user_id)
+        file = InputMedia(media=InputFile(file_name), caption=f"{title}, {url}, {time:.2f} сек")
+
+        row = ScreenshotStatistic(
+            url=url,
+            user_id=user_id,
+        )
+        create_row(row)
+        logger.info(f'Скриншот отправлен. {title}, {url}, {time:.2f} сек')
+        await msg.edit_media(file, reply_markup=whois_inline_keyboard(url))
         await OrderDeals.waiting_for_screenshot.set()
-
-    user_id = message.from_user.id
-    
-    file_path = "/home/viktor/Desktop/TPLab_test/app/services/media/loading.png"
-    file = InputFile(file_path)
-    msg = await bot.send_photo(chat_id=user_id, photo=file, caption="Получение скриншота ...")
-
-    url = message.text
-    status_code = site_check(url)
-    
-    if status_code > 399: 
-        await message.answer("Неверный ввод адреса или сайт недоступен")
-        logger.warning(f'Сайт недоступен. Введен url: {url}')
-        return
-    
-    title = get_site_title(url)
-    file_name, time = screenshot(url, user_id)
-    file = InputMedia(media=InputFile(file_name), caption=f"{title}, {url}, {time:.2f} сек")
-
-    row = ScreenshotStatistic(
-        url=url,
-        user_id=user_id,
-    )
-    create_row(row)
-    logger.info(f'Скриншот отправлен. {title}, {url}, {time:.2f} сек')
-    await msg.edit_media(file, reply_markup=whois_inline_keyboard(url))
-    await OrderDeals.waiting_for_screenshot.set()
     
