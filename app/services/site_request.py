@@ -3,12 +3,20 @@ from lxml.html import fromstring
 from loguru import logger
 
 
+def url_transform(url):
+    url_special = url.replace('http://', '').replace('www.', '')
+    url_for_request = "http://" + url_special
+    print(url_for_request)
+    return url_for_request
+
+
 def site_check(url):
     """
     Get response status code by URL
     """
     try:
-        response = requests.get(url)
+        url_for_request = url_transform(url)
+        response = requests.get(url_for_request)
         return int(response.status_code)
     except Exception as e:
         logger.warning(f"Bad URL: {url}")
@@ -19,7 +27,8 @@ def get_site_title(url):
     """
     Get site title by URL
     """
-    response = requests.get(url)
+    url_for_request = url_transform(url)
+    response = requests.get(url_for_request)
     tree = fromstring(response.content)
     title = tree.findtext('.//title')
     return title

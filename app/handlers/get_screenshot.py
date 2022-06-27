@@ -1,9 +1,10 @@
-from aiogram import Dispatcher, types
+import os
+
+from aiogram import types
 from loguru import logger
 from aiogram.types.input_file import InputFile
 from aiogram.types.input_media import InputMedia
 from dotenv import load_dotenv
-import os
 
 from services.site_request import site_check, get_site_title
 from handlers.states import OrderDeals
@@ -42,6 +43,7 @@ async def get_screenshot(message: types.Message):
 
         url = message.text
         status_code = site_check(url)
+        logger.info(f"status code: {status_code}")
         
         if status_code > 399: 
             await message.answer("Неверный ввод адреса или сайт недоступен")
