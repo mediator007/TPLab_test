@@ -9,7 +9,7 @@ from services.site_request import site_check, get_site_title
 from handlers.states import OrderDeals
 from handlers.data_structures import AdminButtons
 from services.screenshot import screenshot
-from services.keyboard import create_keyboard
+from services.keyboard import create_keyboard, whois_inline_keyboard
 from config import bot
 from database .data_structures import ScreenshotStatistic
 from database.db_requests import create_row
@@ -58,5 +58,6 @@ async def get_screenshot(message: types.Message):
     )
     create_row(row)
     logger.info(f'Скриншот отправлен. {title}, {url}, {time:.2f} сек')
-    await msg.edit_media(file)
+    await msg.edit_media(file, reply_markup=whois_inline_keyboard(url))
+    await OrderDeals.waiting_for_screenshot.set()
     
