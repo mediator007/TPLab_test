@@ -7,7 +7,9 @@ import os
 
 from services.site_request import site_check, get_site_title
 from handlers.states import OrderDeals
+from handlers.data_structures import AdminButtons
 from services.screenshot import screenshot
+from services.keyboard import create_keyboard
 from config import bot
 from database .data_structures import ScreenshotStatistic
 from database.db_requests import create_row
@@ -16,13 +18,19 @@ load_dotenv()
 
 ADMIN_PASS = os.getenv('admin_pass')
 
+admin_buttons = AdminButtons(
+    statistic='получить статистику'
+    logout='выйти'
+)
+
 async def get_screenshot(message: types.Message):
     """
     Передаёт пользователю скриншот сайта по url
     """
     
     if message.text == ADMIN_PASS:
-        await message.answer("Сессия администратора")
+        markup = create_keyboard(admin_buttons)
+        await message.answer("Сессия администратора", reply_markup=markup)
         logger.info('Начата сессия администратора')
         await OrderDeals.waiting_for_screenshot.set()
 

@@ -14,6 +14,9 @@ def time_dec(func):
 
 @time_dec
 def screenshot(url: str, user_id: str) -> str:
+    """
+    Запись скриншота в файл
+    """
     current_date = datetime.now()
     format_date = current_date.strftime("%d_%m_%Y")
     format_url = url.replace('.', '_').replace('http://', '')
