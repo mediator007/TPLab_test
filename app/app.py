@@ -9,7 +9,8 @@ from loguru import logger
 
 from config import dp, bot
 import handlers.states as st
-from handlers.get_screenshot import get_screenshot, admin
+from handlers.get_screenshot import get_screenshot
+from handlers.admin import admin
 
 
 async def bot_start(message: types.Message, state: FSMContext):

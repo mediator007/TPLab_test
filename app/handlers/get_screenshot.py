@@ -19,7 +19,7 @@ load_dotenv()
 ADMIN_PASS = os.getenv('admin_pass')
 
 admin_buttons = AdminButtons(
-    statistic='получить статистику'
+    statistic='получить статистику',
     logout='выйти'
 )
 

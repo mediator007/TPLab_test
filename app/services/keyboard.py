@@ -16,6 +16,6 @@ def whois_inline_keyboard(url):
     Create InlineKeyboardMarkup
     """
     keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
-    button = types.InlineKeyboardButton(f'{url}', url=f'https://www.whois.com/whois/{url}')
+    button = types.InlineKeyboardButton(f'Who Is: {url}', url=f'https://www.whois.com/whois/{url}')
     keyboard_markup.row(button)
     return keyboard_markup
