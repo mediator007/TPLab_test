@@ -2,8 +2,6 @@ import asyncio
 from aiogram import Bot
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.types import CallbackQuery, ReplyKeyboardMarkup
 from aiogram.types.bot_command import BotCommand
 from loguru import logger
 

@@ -4,9 +4,8 @@ from loguru import logger
 
 
 def url_transform(url):
-    url_special = url.replace('http://', '').replace('www.', '')
+    url_special = url.replace('http://', '').replace("https://", '').replace('www.', '')
     url_for_request = "http://" + url_special
-    print(url_for_request)
     return url_for_request
 
 
@@ -16,6 +15,7 @@ def site_check(url):
     """
     try:
         url_for_request = url_transform(url)
+        logger.info(f"request: {url_for_request}")
         response = requests.get(url_for_request)
         return int(response.status_code)
     except Exception as e:

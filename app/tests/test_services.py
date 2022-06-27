@@ -15,6 +15,7 @@ def test_get_site_title():
 
 def test_url_transform():
     assert url_transform("www.google.com") == "http://google.com"
+    assert url_transform("https://google.com") == "http://google.com"
     assert url_transform("google.com") == "http://google.com"
     assert url_transform("http://www.google.com") == "http://google.com"
 

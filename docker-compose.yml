@@ -6,7 +6,7 @@ x-env: &x-env
 
 services:
   bot:
-    build:
+    build:res.url
       context: app
     volumes:
       - static:/static

@@ -52,14 +52,19 @@ async def get_screenshot(message: types.Message):
         
         title = get_site_title(url)
         file_name, time = screenshot(url, user_id)
-        file = InputMedia(media=InputFile(file_name), caption=f"{title}, {url}, {time:.2f} сек")
+        if os.path.exists(file_name):
+            file = InputMedia(media=InputFile(file_name), caption=f"{title}, {url}, {time:.2f} сек")
+            row = ScreenshotStatistic(
+                url=url,
+                user_id=user_id,
+            )
+            
+            create_row(row)
 
-        row = ScreenshotStatistic(
-            url=url,
-            user_id=user_id,
-        )
-        create_row(row)
-        logger.info(f'Скриншот отправлен. {title}, {url}, {time:.2f} сек')
-        await msg.edit_media(file, reply_markup=whois_inline_keyboard(url))
-        await OrderDeals.waiting_for_screenshot.set()
+            logger.info(f'Скриншот отправлен. {title}, {url}, {time:.2f} сек')
+            await msg.edit_media(file, reply_markup=whois_inline_keyboard(url))
+            return
+        else:
+            await message.answer("Что-то пошло не так. Попробуйте снова!")
+            return
     
