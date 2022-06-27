@@ -1,3 +1,4 @@
+import re
 from aiogram import Dispatcher, types
 from loguru import logger
 
@@ -16,10 +17,9 @@ async def admin(message: types.Message):
     if message.text == admin_buttons.statistic:
         await message.answer("Запросы за сегодня:")
         
-        # result = get_statistic()
-        
-        # for element in result:
-        #     await message.answer('element[0]')
+        result = get_statistic()
+        for res in result:
+            await message.answer(f"User: {res[1]}, site: {res[0]}")
         logger.info('Запрос статистики администратором')
         return 
     elif message.text == admin_buttons.logout:

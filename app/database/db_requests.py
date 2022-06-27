@@ -29,11 +29,12 @@ def create_row(row: SS):
         cursor.close()
 
 
-def get_statistic(row: SS):
+def get_statistic():
+    today = datetime.today()
     with postgres_connector(dsl) as pg_conn:
         cursor = pg_conn.cursor()
         cursor.execute(
-            """SELECT * FROM statistic;""")
+            """SELECT * FROM statistic WHERE created < %s;""", (today,))
         result = cursor.fetchall()
         cursor.close()
         return result
