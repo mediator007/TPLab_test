@@ -6,4 +6,5 @@ class OrderDeals(StatesGroup):
     Состояния для конечного автомата
     """
     waiting_for_screenshot = State()
+    waiting_for_admin = State()
     

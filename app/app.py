@@ -9,7 +9,7 @@ from loguru import logger
 
 from config import dp, bot
 import handlers.states as st
-from handlers.get_screenshot import get_screenshot
+from handlers.get_screenshot import get_screenshot, admin
 
 
 async def bot_start(message: types.Message, state: FSMContext):
@@ -34,8 +34,8 @@ def register_handlers_deals(dp: Dispatcher):
     dp.register_message_handler(callback=bot_start, commands="start", state="*")
     dp.register_message_handler(callback=bot_help, commands="help", state="*")
     dp.register_message_handler(callback=get_screenshot, state=st.OrderDeals.waiting_for_screenshot)
+    dp.register_message_handler(callback=admin, state=st.OrderDeals.waiting_for_admin)
     
-
 
 async def set_commands_model(bot: Bot):
     commands = [

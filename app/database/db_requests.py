@@ -27,3 +27,13 @@ def create_row(row: SS):
             f"""INSERT INTO statistic (url, user_id, created) VALUES (%s, %s, %s);""", (row.url, row.user_id, row.created))
         pg_conn.commit()
         cursor.close()
+
+
+def get_statistic(row: SS):
+    with postgres_connector(dsl) as pg_conn:
+        cursor = pg_conn.cursor()
+        cursor.execute(
+            """SELECT * FROM statistic;""")
+        result = cursor.fetchall()
+        cursor.close()
+        return result
