@@ -46,7 +46,7 @@ def screenshot(url: str, user_id: str) -> str:
         driver.get_screenshot_as_file(filename=file_name) # try: get_screenshot(filename=file_name)
         logger.info(f"get screenshot name: {file_name}")
     except Exception as e:
-        logger.error(f"Error in screenshot: {url_for_request}")
+        logger.error(f"{e} in screenshot {url_for_request}")
     finally:
         driver.quit()
         return file_name
