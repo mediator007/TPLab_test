@@ -14,10 +14,10 @@ def test_get_site_title():
 
 
 def test_url_transform():
-    assert url_transform("www.google.com") == "http://google.com"
-    assert url_transform("https://google.com") == "http://google.com"
-    assert url_transform("google.com") == "http://google.com"
-    assert url_transform("http://www.google.com") == "http://google.com"
+    adress_for_req = "http://google.com"
+    adresses = ["www.google.com", "https://google.com", "google.com", "http://www.google.com"]
+    for adress in adresses:
+        assert url_transform(adress) == adress_for_req
 
 
 def test_time_dec():

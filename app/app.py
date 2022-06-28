@@ -9,7 +9,7 @@ from config import dp, bot
 import handlers.states as st
 from handlers.get_screenshot import get_screenshot
 from handlers.admin import admin
-from services.messages import hello_message
+from services.messages import hello_message, help_maessage
 
 async def bot_start(message: types.Message, state: FSMContext):
     """
@@ -23,7 +23,7 @@ async def bot_help(message: types.Message, state: FSMContext):
     """
     Вызов справки по боту
     """
-    await message.answer("Help text")
+    await message.answer(help_maessage)
 
 
 def register_handlers_deals(dp: Dispatcher):
@@ -37,6 +37,9 @@ def register_handlers_deals(dp: Dispatcher):
     
 
 async def set_commands_model(bot: Bot):
+    """
+    Команды для главного меню
+    """
     commands = [
         BotCommand(command="/start", description="Перезапуск"),
         BotCommand(command="/help", description="Помощь"),

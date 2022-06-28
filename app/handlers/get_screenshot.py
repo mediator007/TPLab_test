@@ -26,14 +26,17 @@ admin_buttons = AdminButtons(
 
 async def get_screenshot(message: types.Message):
     """
-    Передаёт пользователю скриншот сайта по url
+    Функционал пользователя: запрос скриншота, начала сессии администратора
+    по паролю, занесение статистики в бд
     """
-    
+    # Check input text for admin password
+    # If true - admin session begin
     if message.text == ADMIN_PASS:
         markup = create_keyboard(admin_buttons)
         await message.answer("Сессия администратора", reply_markup=markup)
         logger.info('Начата сессия администратора')
         await OrderDeals.waiting_for_admin.set()
+    # If message not admin pass - send default answer
     else:
         user_id = message.from_user.id
         
@@ -41,6 +44,7 @@ async def get_screenshot(message: types.Message):
         file = InputFile(file_path)
         msg = await bot.send_photo(chat_id=user_id, photo=file, caption="Получение скриншота ...")
 
+        # Check site response
         url = message.text
         status_code = site_check(url)
         logger.info(f"status code: {status_code}")
@@ -49,19 +53,22 @@ async def get_screenshot(message: types.Message):
             await message.answer("Неверный ввод адреса или сайт недоступен")
             logger.warning(f'Сайт недоступен. Введен url: {url}')
             return
-        
+        # Get site title
         title = get_site_title(url)
+        # Make screenshot and return file_name and request time
         file_name, time = screenshot(url, user_id)
+        # If screenshot save in dir - prepare data for edit default message
         if os.path.exists(file_name):
             file = InputMedia(media=InputFile(file_name), caption=f"{title}, {url}, {time:.2f} сек")
+            # send statisctic to db
             row = ScreenshotStatistic(
                 url=url,
                 user_id=user_id,
             )
-            
             create_row(row)
 
             logger.info(f'Скриншот отправлен. {title}, {url}, {time:.2f} сек')
+            # Edit default message
             await msg.edit_media(file, reply_markup=whois_inline_keyboard(url))
             return
         else:
