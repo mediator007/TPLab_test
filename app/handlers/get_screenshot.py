@@ -40,7 +40,7 @@ async def get_screenshot(message: types.Message):
     else:
         user_id = message.from_user.id
         
-        file_path = "./app/services/media/loading.png"
+        file_path = "./services/media/loading.png"
         file = InputFile(file_path)
         msg = await bot.send_photo(chat_id=user_id, photo=file, caption="Получение скриншота ...")
 

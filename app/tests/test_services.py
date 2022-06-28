@@ -14,7 +14,7 @@ def test_get_site_title():
 
 
 def test_url_transform():
-    adress_for_req = "http://google.com"
+    adress_for_req = "https://google.com"
     adresses = ["www.google.com", "https://google.com", "google.com", "http://www.google.com"]
     for adress in adresses:
         assert url_transform(adress) == adress_for_req

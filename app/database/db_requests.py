@@ -16,15 +16,22 @@ dsl = {
         'dbname': 'bot',
         'user': USER,
         'password': PASSWORD,
-        'host': '127.0.0.1',
+        'host': 'postgres',
         'port': 5432
     }
 
-def create_row(row: SS):
+def create_table():
     with postgres_connector(dsl) as pg_conn:
         cursor = pg_conn.cursor()
         cursor.execute(
             """CREATE TABLE IF NOT EXISTS statistic (url TEXT, user_id INTEGER, created timestamp with time zone);""")
+        pg_conn.commit()
+        cursor.close()
+
+
+def create_row(row: SS):
+    with postgres_connector(dsl) as pg_conn:
+        cursor = pg_conn.cursor()
         cursor.execute(
             f"""INSERT INTO statistic (url, user_id, created) VALUES (%s, %s, %s);""", (row.url, row.user_id, row.created))
         pg_conn.commit()

@@ -10,11 +10,13 @@ import handlers.states as st
 from handlers.get_screenshot import get_screenshot
 from handlers.admin import admin
 from services.messages import hello_message, help_maessage
+from database.db_requests import create_table
 
 async def bot_start(message: types.Message, state: FSMContext):
     """
     Функция первоначального запуска бота или ребута
     """
+    create_table()
     await message.answer(hello_message)
     await st.OrderDeals.waiting_for_screenshot.set()
 

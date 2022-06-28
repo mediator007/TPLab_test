@@ -18,11 +18,14 @@ def site_check(url):
     """
     try:
         url_for_request = url_transform(url)
-        logger.info(f"request: {url_for_request}")
         response = requests.get(url_for_request)
+        logger.info(f"request: {url_for_request}")
+        if response.status_code > 399:
+            response = requests.get(url_for_request.replace('https', 'http'))
+            logger.info(f"request: {url_for_request.replace('https', 'http')}")
         return int(response.status_code)
     except Exception as e:
-        logger.warning(f"Bad URL: {url}")
+        logger.warnobjecting(f"Bad URL: {url}")
         return 404
 
 

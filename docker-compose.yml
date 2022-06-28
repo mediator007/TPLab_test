@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 x-env: &x-env
   env_file:
@@ -6,7 +6,7 @@ x-env: &x-env
 
 services:
   bot:
-    build:res.url
+    build:
       context: app
     volumes:
       - static:/static
@@ -15,70 +15,35 @@ services:
       - postgres
 
   postgres:
-    image: postgres:12.1
+    image: postgres:13.3
     restart: always
     <<: *x-env
     environment:
-      POSTGRES_USER: db_user
-      POSTGRES_PASSWORD: db_password
-      POSTGRES_DB: 'bot' 
+      POSTGRES_DB: 'bot'
+      POSTGRES_USER: 'app'
+      POSTGRES_PASSWORD: '123qwe'
+    ports:
+      - "5432:5432" 
     depends_on: 
       - chrome
     volumes:
       - devdb:/var/lib/postgresql/data
-  
+
   selenium-hub:
-    restart: always
-    image: selenium/hub:3.14.0
+    image: selenium/hub:3.141.59-zirconium
     container_name: selenium-hub
     ports:
       - "4444:4444"
-
   chrome:
-    restart: always
-    image: selenium/node-chrome-debug:3.14.0
-    ports:
-      - "5900-5999:5900"
+    image: selenium/node-chrome:3.141.59-zirconium
+    volumes:
+      - /dev/shm:/dev/shm
     depends_on:
       - selenium-hub
     environment:
-      HUB_HOST: selenium-hub
-      HUB_PORT_4444_TCP_ADDR: selenium-hub
-      HUB_PORT_4444_TCP_PORT: 4444
-      DBUS_SESSION_BUS_ADDRESS: "/dev/null"
-    links:
-      - selenium-hub:hub
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
 
 volumes:
   devdb:
   static:
-
-##################
-# hub:
-#   image: selenium/hub
-#   ports:
-#     - "4444:4444"
-# firefox:
-#   image: selenium/node-firefox
-#   links:
-#     - hub
-# chrome:
-#   image: selenium/node-chrome
-#   links:
-#     - hub
-#############
-# selenium-hub:
-#   image: selenium/hub:3.141.59-zirconium
-#   container_name: selenium-hub
-#   ports:
-#     - "4444:4444"
-# chrome:
-#   image: selenium/node-chrome:3.141.59-zirconium
-#   volumes:
-#     - /dev/shm:/dev/shm
-#   depends_on:
-#     - selenium-hub
-#   environment:
-#     - HUB_HOST=selenium-hub
-#     - HUB_PORT=4444
-####################

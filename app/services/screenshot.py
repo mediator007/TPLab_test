@@ -1,11 +1,11 @@
 import time
 from datetime import datetime
-from async_timeout import timeout
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from loguru import logger
 
 from services.site_request import url_transform
+
 
 def time_dec(func):
     def wrapper(*args, **kwargs):
@@ -22,17 +22,17 @@ def screenshot(url: str, user_id: str) -> str:
     Запись скриншота в файл
     """
     time.sleep(2)
-    driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
+    driver = webdriver.Remote(f"http://127.0.0.1/wd/hub", DesiredCapabilities.CHROME)
     driver.set_page_load_timeout(30)
     logger.info("driver up")
     current_date = datetime.now()
     # fix date format for file name
     format_date = current_date.strftime("%d_%m_%Y")
     # format url for request
-    format_url_for_file= url.replace('.', '_').replace('http://', '').replace('www.', '').replace('https://', '')
+    format_url_for_file= url.replace('.', '_').replace('http://', '').replace('www.', '').replace('https://', '').replace('/', '')
     url_for_request = url_transform(url)
     # generate file name and path for saving
-    file_name = (f'./app/services/media/{format_date}_{user_id}_{format_url_for_file}.png')
+    file_name = (f'./services/media/{format_date}_{user_id}_{format_url_for_file}.png')
     try:
         # open browser        
         driver.get(url_for_request)
