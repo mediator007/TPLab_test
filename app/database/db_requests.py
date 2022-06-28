@@ -1,9 +1,11 @@
-from datetime import datetime
-from database.postgres_connector import postgres_connector
-from loguru import logger
-from database.data_structures import ScreenshotStatistic as SS
-from dotenv import load_dotenv
 import os
+from datetime import date
+
+from loguru import logger
+from dotenv import load_dotenv
+
+from database.data_structures import ScreenshotStatistic as SS
+from database.postgres_connector import postgres_connector
 
 load_dotenv()
 
@@ -30,11 +32,16 @@ def create_row(row: SS):
 
 
 def get_statistic():
-    today = datetime.today()
+    today = date.today()
     with postgres_connector(dsl) as pg_conn:
         cursor = pg_conn.cursor()
         cursor.execute(
-            """SELECT * FROM statistic WHERE created < %s;""", (today,))
+            """SELECT * FROM statistic WHERE created > %s;""", (today,))
         result = cursor.fetchall()
         cursor.close()
         return result
+
+if __name__=="__main__":
+    result = get_statistic()
+    for res in result:
+        print(res[1], res[0], res[2])

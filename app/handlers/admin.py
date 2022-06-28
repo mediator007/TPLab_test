@@ -23,8 +23,8 @@ async def admin(message: types.Message):
         logger.info('Запрос статистики администратором')
         return 
     elif message.text == admin_buttons.logout:
-        await message.answer("Admin session close")
-        logger.info('Сессия администратора завершена',reply_markup= types.ReplyKeyboardRemove())
+        await message.answer("Admin session close",reply_markup= types.ReplyKeyboardRemove())
+        logger.info('Сессия администратора завершена')
         await OrderDeals.waiting_for_screenshot.set()
     else:
         await message.answer("Используйте клавиатуру для вызова команд")

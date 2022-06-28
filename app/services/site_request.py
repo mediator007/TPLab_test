@@ -8,7 +8,7 @@ def url_transform(url):
     Transfor url for request
     """
     url_special = url.replace('http://', '').replace("https://", '').replace('www.', '')
-    url_for_request = "http://" + url_special
+    url_for_request = "https://" + url_special
     return url_for_request
 
 

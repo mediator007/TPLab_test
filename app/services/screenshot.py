@@ -21,32 +21,31 @@ def screenshot(url: str, user_id: str) -> str:
     """
     Запись скриншота в файл
     """
+    time.sleep(2)
     driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
-    # driver = webdriver.Chrome("/home/viktor/Desktop/TPLab_test/app/services/chromedriver")
+    driver.set_page_load_timeout(30)
+    logger.info("driver up")
+    current_date = datetime.now()
+    # fix date format for file name
+    format_date = current_date.strftime("%d_%m_%Y")
+    # format url for request
+    format_url_for_file= url.replace('.', '_').replace('http://', '').replace('www.', '').replace('https://', '')
+    url_for_request = url_transform(url)
+    # generate file name and path for saving
+    file_name = (f'./app/services/media/{format_date}_{user_id}_{format_url_for_file}.png')
     try:
-
-        logger.info("driver up")
-        current_date = datetime.now()
-        # fix date format for file name
-        format_date = current_date.strftime("%d_%m_%Y")
-        # format url for request
-        format_url_for_file= url.replace('.', '_').replace('http://', '').replace('www.', '')
-        url_for_request = url_transform(url)
-        # generate file name and path for saving
-        file_name = (f'./app/services/media/{format_date}_{user_id}_{format_url_for_file}.png')
-        # open browser
-
-        # TRY: driver.set_page_load_timeout(30)
-
-        
+        # open browser        
         driver.get(url_for_request)
         time.sleep(2)
         logger.info(f"get url: {url_for_request}")
         # make screenshot and save to path from file_name
-        driver.get_screenshot_as_file(filename=file_name) # try: get_screenshot(filename=file_name)
+        driver.get_screenshot_as_file(filename=file_name)
         logger.info(f"get screenshot name: {file_name}")
     except Exception as e:
         logger.error(f"{e} in screenshot {url_for_request}")
     finally:
         driver.quit()
+        logger.info("Driver quit")
+        driver.stop_client()
+        logger.info("Stop client")
         return file_name
